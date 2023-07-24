@@ -8,13 +8,23 @@ import ProfileAbout from './ProfileAbout';
 import ProfileExperience from './ProfileExperience';
 import ProfileEducation from './ProfileEducation';
 import ProfileGithub from './ProfileGithub';
-import { getProfileById } from '../../actions/profile';
+import { getCurrentProfile, getProfileById } from '../../actions/profile';
 
-const Profile = ({ getProfileById, profile: { profile, loading }, auth }) => {
+const Profile = ({
+  getCurrentProfile,
+  getProfileById,
+  profile: { profile, loading },
+  auth,
+}) => {
   const { id } = useParams();
+
   useEffect(() => {
-    getProfileById(id);
-  }, []);
+    if (id === 'undefined' || id === undefined) {
+      getCurrentProfile();
+    } else {
+      getProfileById(id);
+    }
+  }, [id]);
 
   return (
     <Fragment>
@@ -79,6 +89,7 @@ const Profile = ({ getProfileById, profile: { profile, loading }, auth }) => {
 
 Profile.propTypes = {
   getProfileById: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
 };
@@ -88,4 +99,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getProfileById })(Profile);
+export default connect(mapStateToProps, { getCurrentProfile, getProfileById })(
+  Profile
+);

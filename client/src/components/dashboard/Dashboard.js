@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import { DashboardActions } from './DashboardActions';
+import DashboardActions from './DashboardActions';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import Experience from './Experience';
 import Education from './Education';
@@ -24,7 +24,7 @@ const Dashboard = ({
     <Fragment>
       <h1 className="large text-primary">Dashboard</h1>
       <p className="lead">
-        <i className="fas fa-user" /> Welcome {user && user.name}
+        <i className="fas fa-user" /> Welcome {user && user.name.split(' ')[0]}
       </p>
       {profile != null ? (
         <Fragment>
