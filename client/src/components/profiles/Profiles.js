@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
@@ -9,6 +9,13 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   useEffect(() => {
     getProfiles();
   }, []);
+
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  // Filter the profiles based on the search keyword
+  const filteredProfiles = profiles.filter((profile) =>
+    profile.user.name.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
 
   return (
     <section className="container">
@@ -21,9 +28,22 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
             <i className="fab fa-connectdevelop" /> Browse and connect with
             developers
           </p>
+
+          {/* Search bar with the magnifier icon */}
+          <div className="search-bar">
+            <i className="fas fa-search search-icon" />
+            <input
+              type="text"
+              placeholder="Search developers..."
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              className="large-search-box"
+            />
+          </div>
+
           <div className="profiles">
-            {profiles.length > 0 ? (
-              profiles.map((profile) => (
+            {filteredProfiles.length > 0 ? (
+              filteredProfiles.map((profile) => (
                 <ProfileItem key={profile._id} profile={profile} />
               ))
             ) : (
